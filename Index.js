@@ -15,6 +15,27 @@ const Title = document.querySelector('.Title');
 const loginContainer = document.querySelector('.login');
 const IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMl9GkxbI0emfP0ZpOtT4cRPn7yDgMYUgKCw&s';
 const letters =document.createTextNode['1', '2', '3'];
+const ORIGINAL_TITLE_TEXT = Title?.textContent ?? '';
+let titleResetTimer = null;
+
+const isUnlockDate = () => {
+  const now = new Date();
+  return (
+    now.getFullYear() === 2026 &&
+    now.getMonth() === 1 &&
+    now.getDate() === 14
+  );
+};
+
+const showNotValentinesMessage = () => {
+  if (!Title) return;
+  if (titleResetTimer) clearTimeout(titleResetTimer);
+  Title.textContent = 'its not valentines day yet';
+  titleResetTimer = setTimeout(() => {
+    Title.textContent = ORIGINAL_TITLE_TEXT;
+    titleResetTimer = null;
+  }, 2000);
+};
 
 const ensureImage = () => {
   let image = document.querySelector('.success-img');
@@ -407,7 +428,7 @@ const applyUnlockedUI = () => {
 const RESET_AFTER_MS = 30 * 1000;
 try {
   const unlockedAt = Number(localStorage.getItem('unlockedAt'));
-  if (unlockedAt && Date.now() - unlockedAt < RESET_AFTER_MS) {
+  if (unlockedAt && Date.now() - unlockedAt < RESET_AFTER_MS && isUnlockDate()) {
     applyUnlockedUI();
     setTimeout(() => {
       try {
@@ -430,6 +451,13 @@ try {
 passwordInput.addEventListener('keydown', (event) => {
   if (event.key !== 'Enter') return;
   const passwordValue = passwordInput.value;
+  if (!isUnlockDate()) {
+    if (passwordValue.trim().length > 0) {
+      showNotValentinesMessage();
+    }
+    return;
+  }
+
   if (passwordValue == 'chubbas') {
 
 
