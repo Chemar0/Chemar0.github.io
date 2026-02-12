@@ -1,0 +1,37 @@
+body{
+
+margin: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.login{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+.success-img{
+    margin-top: 16px;
+    max-width: 240px;
+}
+
+img{
+    /* opacity: 0; */
+    border-color: white;
+    border-style: solid;
+    
+}
+
+.text{
+color: white;
+font-family:'Times New Roman', Times, serif;
+line-height: 1.2;
+min-height: 1.2em;
+}
+
+.text-container{
+    margin-top: 18px;
+}
