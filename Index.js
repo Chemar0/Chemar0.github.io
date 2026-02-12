@@ -16,6 +16,7 @@ const loginContainer = document.querySelector('.login');
 const IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMl9GkxbI0emfP0ZpOtT4cRPn7yDgMYUgKCw&s';
 const letters =document.createTextNode['1', '2', '3'];
 const ORIGINAL_TITLE_TEXT = Title?.textContent ?? '';
+const TITLE_MESSAGE_MS = 2000;
 let titleResetTimer = null;
 
 const isUnlockDate = () => {
@@ -34,7 +35,32 @@ const showNotValentinesMessage = () => {
   titleResetTimer = setTimeout(() => {
     Title.textContent = ORIGINAL_TITLE_TEXT;
     titleResetTimer = null;
-  }, 2000);
+  }, TITLE_MESSAGE_MS);
+};
+
+const showInvalidInputFeedback = (showDateMessage = false) => {
+  if (!passwordInput) return;
+  if (showDateMessage) showNotValentinesMessage();
+  passwordInput.value = '';
+  passwordInput.style.borderColor = '#dc2626';
+  passwordInput.style.transition = 'border-color 420ms ease-in-out';
+  passwordInput.animate(
+    [
+      { transform: 'translateX(0)' },
+      { transform: 'translateX(-10px)' },
+      { transform: 'translateX(10px)' },
+      { transform: 'translateX(-8px)' },
+      { transform: 'translateX(8px)' },
+      { transform: 'translateX(0)' },
+    ],
+    {
+      duration: 360,
+      easing: 'ease-in-out',
+    }
+  );
+  setTimeout(() => {
+    passwordInput.style.borderColor = '';
+  }, TITLE_MESSAGE_MS);
 };
 
 const ensureImage = () => {
@@ -453,7 +479,7 @@ passwordInput.addEventListener('keydown', (event) => {
   const passwordValue = passwordInput.value;
   if (!isUnlockDate()) {
     if (passwordValue.trim().length > 0) {
-      showNotValentinesMessage();
+      showInvalidInputFeedback(true);
     }
     return;
   }
@@ -480,5 +506,7 @@ passwordInput.addEventListener('keydown', (event) => {
         console.error('localStorage unavailable:', err);
       }
     }, RESET_AFTER_MS);
+  } else {
+    showInvalidInputFeedback(false);
   }
 });
